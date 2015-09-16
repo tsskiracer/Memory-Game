@@ -3,14 +3,18 @@ public class MemoryGame
 	{
 		static String showCards[][]=new String[4][4];
 		static String hidCards[][] = new String[4][4];
+		static ArrayList<String> words = new ArrayList<String>();
+		static String hidArray[][]=new String[4][4];
+		static int secondRowChoice, secondColChoice, firstRowChoice, firstColChoice;
+		
+		
 		public static void main(String[] args)
+		
 			{	
-				userBoard();
-				createAnswer();
 				fillBoard();
-				display();		
-				
-				
+				display();
+				userBoard();
+				createAnswer();		
 			}
 		public static void display()
 		{
@@ -38,12 +42,9 @@ public class MemoryGame
 			System.out.println("   |___________|___________|___________|___________|");
 		}
 				
-				
-				
-				
 		public static void createAnswer()
 			{
-			ArrayList<String> words = new ArrayList<String>();
+			
 				words.add("Bike");
 				words.add("Tens");
 				words.add("Tank");
@@ -62,66 +63,117 @@ public class MemoryGame
 				words.add("Cars");
 				Collections.shuffle(words);
 			}
-			
-		public static void fillBoard()
+		
+		public static void hidArray()
 		{
+			
+			int counter=0;
 			for(int row=0; row<showCards.length; row++)
 				{
 					for (int col = 0; col<showCards[0].length; col++)
 						{
+							hidArray[row][col]=words.get(counter);
+							counter++;
 							
+							
+						}
+				}
+		}
+			
+		public static void fillBoard()
+		{
+			String showCards[][]=new String [4][4];
+			for(int row=0; row<showCards.length; row++)
+				{
+					for (int col = 0; col<showCards[0].length; col++)
+						{
 							showCards[row][col]="    ";
-							
 							
 							
 						}
 				}
 			
 		}
+		
 		public static void userBoard()
 			{
 				int firstRowChoice = 0;
 				Scanner userInput = new Scanner (System.in);
 				String choice = userInput.nextLine();
-				for(int row=0; row<showCards.length; row++)
-					{
-						for (int col = 0; col<showCards[0].length; col++)
-							{
-								switch (choice.substring(0,1))
-									{
-										case "A": 
-										case "a":
-												{
-													firstRowChoice = 0;
-													break;
-												}
-										case "B": 
-										case "b":
-												{
-													firstRowChoice = 1;
-													break;
-												}
+				char rows=choice.charAt(0);	
+				switch (rows)
+				{
+					case 'A': 
+					case 'a':
+													
+						firstRowChoice = 0;
+						break;
 												
-										case "C": 
-										case "c":
-												{
-													firstRowChoice = 2;
-													break;
-												}
-										case "D": 
-										case "d":
-												{
-													firstRowChoice = 3;
-													break;
-												}
-							
-									}
-							
-								
-								
-							}
-					}
-				
+					case 'B': 
+					case 'b':
+												
+						firstRowChoice = 1;
+						break;
+																				
+					case 'C': 
+					case 'c':
+												
+						firstRowChoice = 2;
+						break;
+												
+					case 'D': 
+					case 'd':
+												
+						firstRowChoice = 3;
+						break;
+									
 			}
-		
+				int firstColChoice = Integer.parseInt(choice.substring(1)) - 1;		
+				
+				int secondRowChoice = 0;
+				Scanner userInputTwo = new Scanner (System.in);
+				String choiceTwo = userInput.nextLine();
+				char rowsTwo=choice.charAt(0);	
+				switch (rowsTwo)
+				{
+					case 'A': 
+					case 'a':
+													
+						secondRowChoice = 0;
+						break;
+												
+					case 'B': 
+					case 'b':
+												
+						secondRowChoice = 1;
+						break;
+																				
+					case 'C': 
+					case 'c':
+												
+						secondRowChoice = 2;
+						break;
+												
+					case 'D': 
+					case 'd':
+												
+						secondRowChoice = 3;
+						break;
+									
+			}
+				int secondColChoice = Integer.parseInt(choice.substring(1)) - 1;		
+			showCards[firstRowChoice][firstColChoice]=hidArray[firstRowChoice][firstColChoice];
+			display();
+			showCards[secondRowChoice][secondColChoice]=hidArray[secondRowChoice][secondColChoice];
+			display();		
+		}
+		public static void check() throws InterruptedException 
+		{
+			if(!showCards[firstRowChoice][firstColChoice].equals(showCards[secondRowChoice][secondColChoice]))
+				{
+					Thread.sleep(3000);
+					showCards[firstRowChoice][firstColChoice]="    ";
+					showCards[secondRowChoice][secondColChoice]="    ";
+				}
+		}
 	}

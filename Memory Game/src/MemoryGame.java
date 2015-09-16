@@ -5,16 +5,20 @@ public class MemoryGame
 		static String hidCards[][] = new String[4][4];
 		static ArrayList<String> words = new ArrayList<String>();
 		static String hidArray[][]=new String[4][4];
+		static int counter=0;
 		static int secondRowChoice, secondColChoice, firstRowChoice, firstColChoice;
 		
 		
-		public static void main(String[] args)
+		public static void main(String[] args) throws InterruptedException
 		
 			{	
 				fillBoard();
+				createAnswer();	
+				hidArray();
 				display();
 				userBoard();
-				createAnswer();		
+				check(); 
+				
 			}
 		public static void display()
 		{
@@ -82,7 +86,7 @@ public class MemoryGame
 			
 		public static void fillBoard()
 		{
-			String showCards[][]=new String [4][4];
+			
 			for(int row=0; row<showCards.length; row++)
 				{
 					for (int col = 0; col<showCards[0].length; col++)
@@ -97,8 +101,8 @@ public class MemoryGame
 		
 		public static void userBoard()
 			{
-				int firstRowChoice = 0;
 				Scanner userInput = new Scanner (System.in);
+				System.out.println("Please input your chosen coordinates."); 
 				String choice = userInput.nextLine();
 				char rows=choice.charAt(0);	
 				switch (rows)
@@ -128,12 +132,14 @@ public class MemoryGame
 						break;
 									
 			}
-				int firstColChoice = Integer.parseInt(choice.substring(1)) - 1;		
+				firstColChoice = Integer.parseInt(choice.substring(1)) - 1;		
+				showCards[firstRowChoice][firstColChoice]=hidArray[firstRowChoice][firstColChoice];
+				display(); 
 				
-				int secondRowChoice = 0;
 				Scanner userInputTwo = new Scanner (System.in);
+				System.out.println("Please input your chosen coordinates."); 
 				String choiceTwo = userInput.nextLine();
-				char rowsTwo=choice.charAt(0);	
+				char rowsTwo=choiceTwo.charAt(0);	
 				switch (rowsTwo)
 				{
 					case 'A': 
@@ -161,19 +167,25 @@ public class MemoryGame
 						break;
 									
 			}
-				int secondColChoice = Integer.parseInt(choice.substring(1)) - 1;		
-			showCards[firstRowChoice][firstColChoice]=hidArray[firstRowChoice][firstColChoice];
-			display();
+				 secondColChoice = Integer.parseInt(choiceTwo.substring(1)) - 1;		
+			
 			showCards[secondRowChoice][secondColChoice]=hidArray[secondRowChoice][secondColChoice];
-			display();		
+			display();	
+			counter++;
 		}
 		public static void check() throws InterruptedException 
 		{
 			if(!showCards[firstRowChoice][firstColChoice].equals(showCards[secondRowChoice][secondColChoice]))
 				{
+					
 					Thread.sleep(3000);
 					showCards[firstRowChoice][firstColChoice]="    ";
 					showCards[secondRowChoice][secondColChoice]="    ";
+					display();
+				}
+			if(showCards==hidCards)
+				{
+					System.out.println("You have won! It took you "+ counter+ "tries.");
 				}
 		}
 	}
